@@ -205,4 +205,196 @@ Asi deberia verse
 
 Con esto nuestra configuracion inicial estaria lista :)
 
+# TESTING DE CODIGO
+
+Luego de tener nuestra congifuracion inicial lista, vamos a hacer un testing a una funcion de JavaScript.
+
+Primero vamos a crear una carpeta llamada version al mismo nivel de nuestros documentos principales y al interior de ella otra carpeta llamada v1, que alojara nuestros codigos para testeo como lo muestra la imagen
+
+<img src="./img/Screenshot from 2023-09-14 18-44-36.png">
+
+Aca vamos a generar nuestro codigo de testeo, es importante saber que no podemos usar propmts, ni consologuear, esto es necesario saberlo al momento de montar nuestro codigo, para este ejemplo usamos el archivo *ejercicio1.js* y luciria asi (Recordar que hay que exportarlo):
+
+<img src="./img/Screenshot from 2023-09-14 20-20-39.png">
+
+
+y luego una carpeta para almacenar nuestros archivos de testing, llamada test, y al interior otra carpeta llamada version
+
+<img src="./img/Screenshot from 2023-09-14 18-44-57.png">
+
+aca crearemos un archivo que se llame identico al archivo js, agregandole antes del tipo de documento, la palabra test, quedaria asi *ejercicio1.test.js*, donde importaremos nuestra funcion a testear y quedaria asi:
+
+<img src="./img/Screenshot from 2023-09-14 20-20-54.png">
+
+Ahora nuevamente usamos los comandos:
+
+```js
+  npm run dev
+```
+en una consola y:
+
+```js
+  npm run test
+```
+
+en otra consola, ambas simultaneamente, como ya lo hemos explicado antes
+
+y nuestro test deberia verse asi(si esta correcto):
+
+<img src="./img/Screenshot from 2023-09-14 20-21-30.png">
+
+# TESTING PARA COMPONENTES
+
+Ahora, vamos a hacer configuracion del testing para componentes, en este punto nuestras configuraciones iniciales deberian estar listas,
+vamos a instalar una nuevas dependecias que serian:
+
+
+```js
+
+"dependencies": {
+    "@babel/preset-react": "^7.22.15",
+    "@testing-library/react": "^14.0.0",
+    "jest-environment-jsdom": "^29.6.4",
+    "whatwg-fetch": "^3.6.18"
+  }
+```
+las instalamos de la forma tradicional:
+
+```js
+  npm i -E -D babel/preset-react
+```
+```js
+  npm i -E -D testing-library/react
+```
+```js
+  npm i -E -D jest-environment-jsdom
+```
+```js
+  npm i -E -D whatwg-fetch
+```
+## Configuracion Babel
+
+En este testeo de componentes, tendremos que realizar un cambio a nuestro archivo babel.config.cjs y quedaria de la siguiente forma:
+
+```js
+  module.exports = {
+    presets: [
+        ['@babel/preset-env', {
+            targets: {
+                esmodules: true
+            }
+        }],
+        ['@babel/preset-react', {
+            runtime: 'automatic'
+        }],
+    ],
+};
+```
+
+## Configuracion Archivos Jest
+
+Debemos configurar dos nuevos archivos jest
+
+### jest.config.cjs
+
+Esta configuracion luce asi, e implementa una de las nuevas librerias instaladas:
+
+```js
+  module.exports = {
+    testEnvironment: 'jest-environment-jsdom',
+    setupFiles: ["./jest.setup.js"],
+}
+```
+
+### jest.setup.js
+
+Y en este archivo configuramos otra de las nuevas librerias
+
+```js
+  import 'whatwg-fetch';
+```
+
+## Creacion del componente
+
+Ahora dentro de nuestra carpeta src, creamos una carpeta llamada components y creamos nuestro componente para este teste de prueba, en nuestro caso se llamara Table.jsx
+
+<img src="./img/Screenshot from 2023-09-14 20-46-21.png" >
+
+y tendra la siguiente configuracion
+
+```js
+  import React from "react";
+
+  export default function Table(){
+      return(
+          <>
+          <h1>Jose</h1>
+          <div>Table</div>
+      </>
+      )
+  }
+```
+
+Seguido haremos nuestro archivo de testing, dentro de una carpeta test al mismo nivel del components, dentro de esta carpeta test creamos una subcarpeta components y al interior de esta nuestro archivo Table.test.jsx
+
+<img src="./img/Screenshot from 2023-09-14 20-58-41.png">
+
+y lo configuraremos de esta manera
+
+```js
+  import {render} from "@testing-library/react";
+  import Table from '../../src/components/Table';
+
+  describe ("Captura del componente <Table.jsx>", ()=>{
+      test("Fotico :)",() =>{
+          let  {container}  = render(<Table/>);
+          expect(container).toMatchSnapshot();
+      })
+  })
+```
+
+La estructura es similar a lo que veniamos haciendo con las funciones, pero aca vemos nuevos metodos aplicados.
+
+## Correr el Testing
+
+Ahora nuevamente usamos los comandos:
+
+```js
+  npm run dev
+```
+en una consola y:
+
+```js
+  npm run test
+```
+
+en otra consola, ambas simultaneamente, como ya lo hemos explicado antes
+
+y nuestro test deberia verse asi(si esta correcto):
+
+<img src="./img/Screenshot from 2023-09-14 20-56-25.png">
+
+y veremos que se crean una carpeta y un archivo nuevo:
+
+<img src="./img/Screenshot from 2023-09-14 20-56-42.png">
+
+y este archivo sdasdadada contiene:
+
+```js
+  // Jest Snapshot v1, https://goo.gl/fbAQLP
+
+  exports[`Captura del componente <Table.jsx> Fotico :) 1`] = `
+  <div>
+    <h1>
+      Jose
+    </h1>
+    <div>
+      Table
+    </div>
+  </div>
+  `;
+
+```
+Con esto nuestro testing de Componentes deberia estar listo :)
+
 # Autor: José Alberto Cabrejo Villar
